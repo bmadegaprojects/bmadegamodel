@@ -1,0 +1,57 @@
+/* Provide sufficient contrast against white background */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~ngx-toastr/toastr';
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.ui-table-employees {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+
+.ui-table-employees .ui-paginator .ui-dropdown {
+  float: left;
+}
+.ui-table-employees .ui-paginator .ui-paginator-current {
+  float: right;
+}
+
+.ui-table-employees .ui-column-filter {
+  display: block;
+}
+
+.ui-table-employees .ui-column-filter input {
+  width: 100%;
+}
+
+.ui-table-employees .ui-table-caption {
+  border: 0 none;
+  padding: 12px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.ui-table-employees .ui-paginator {
+  border: 0 none;
+  padding: 1em;
+}
+
+.ui-table-employees .ui-table-thead > tr > th {
+  border: 0 none;
+  text-align: left;
+}
+
+.ui-table-employees .ui-table-thead > tr > th.ui-filter-column {
+  border-top: 1px solid #c8c8c8;
+}

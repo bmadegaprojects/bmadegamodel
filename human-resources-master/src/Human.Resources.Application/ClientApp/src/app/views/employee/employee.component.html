@@ -1,0 +1,97 @@
+<div>
+  <div class="row">
+    <div class="col">
+      <h4 id="tableLabel" class="float-left">Funcionários</h4>
+      <button [routerLink]="['employee']" class="float-right btn btn-success">Adicionar</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col mb-2">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <p-table #dt [columns]="cols" [value]="employees" [paginator]="true" [rows]="5" styleClass="ui-table-employees" [autoLayout]="true"
+        [loading]="loading">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input
+                *ngIf="col.field != 'empty' && col.field != 'birthDate' && col.field != 'skills' && col.field != 'isActive' && col.field != 'gender.name'"
+                pInputText type="text" (input)="dt.filter($event.target.value, col.field, 'contains')"
+                class="ui-column-filter form-control">
+
+              <ng-select *ngIf="col.field == 'isActive'" [multiple]="false" [(ngModel)]="isActiveFilter"
+                (change)="filterIsActive()">
+                <ng-option [value]="true">Ativo</ng-option>
+                <ng-option [value]="false">Inativo</ng-option>
+              </ng-select>
+
+              <ng-select *ngIf="col.field == 'gender.name'" [multiple]="false" [(ngModel)]="genderFilter"
+                (change)="filterGender()">
+                <ng-option [value]="1">Masculino</ng-option>
+                <ng-option [value]="2">Feminino</ng-option>
+              </ng-select>
+
+              <input *ngIf="col.field == 'birthDate'" pInputText type="text" [specialCharacters]="[ '/' ]"
+                mask="00/00/0000" (input)="filterDate($event.target.value)" class="ui-column-filter form-control"
+                [(ngModel)]="inputDate">
+
+              <ng-select *ngIf="col.field == 'skills'" [items]="skills" [multiple]="true" [closeOnSelect]="false"
+                bindLabel="name" [(ngModel)]="skillsSelected" (change)="filterSkills()">
+                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                  <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    <span class="ng-value-label text-ellipsis">{{item.name}}</span>
+                  </div>
+                  <div class="ng-value" *ngIf="items.length > 1">
+                    <span class="ng-value-label">{{items.length - 1}}
+                      mais...</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              <label *ngIf="col.field == 'isActive'" title="Mudar" style="vertical-align: middle; margin-left: .5em">
+                <p-toggleButton onLabel="Ativo" offLabel="Inativo"
+                  iconPos="right" [(ngModel)]="rowData.isActive" (onChange)="changeStatus(rowData)">
+                </p-toggleButton>
+              </label>
+
+              <span *ngIf="col.field != 'empty' && col.field != 'birthDate' && col.field != 'skills'
+              && col.field != 'isActive' && col.field != 'email'"
+                style="vertical-align: middle; margin-left: .5em">{{resolveCellGrid(rowData, col.field)}}</span>
+
+              <span *ngIf="col.field == 'birthDate'"
+                style="vertical-align: middle; margin-left: .5em">{{rowData[col.field] | date: 'dd/MM/yyyy'}}</span>
+
+              <span *ngIf="col.field == 'skills'" style="vertical-align: middle; margin-left: .5em">
+                <li *ngFor="let skill of rowData.skills">{{skill.name}}</li>
+              </span>
+
+              <span *ngIf="col.field == 'email'"
+              style="vertical-align: middle; margin-left: .5em">{{resolveCellGrid(rowData, col.field)}}</span>
+
+              <span *ngIf="col.field == 'empty'">
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2" [routerLink]="['employee', rowData.id]">
+                  <i class="pi pi-pencil"></i>
+                </button>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
